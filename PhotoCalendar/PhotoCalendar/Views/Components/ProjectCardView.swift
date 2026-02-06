@@ -118,8 +118,7 @@ struct NewProjectCard: View {
             .cornerRadius(12)
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
-                    .stroke(Color.appPrimary.opacity(0.3), lineWidth: 1)
-                    .strokeStyle(style: StrokeStyle(lineWidth: 1, dash: [5]))
+                    .stroke(Color.appPrimary.opacity(0.3), style: StrokeStyle(lineWidth: 1, dash: [5]))
             )
         }
         .buttonStyle(PlainButtonStyle())
