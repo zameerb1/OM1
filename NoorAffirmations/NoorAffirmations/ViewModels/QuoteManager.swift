@@ -43,7 +43,6 @@ class QuoteManager: ObservableObject {
     }
 
     func previousQuote() {
-        // For simplicity, just get another random quote
         nextQuote()
     }
 

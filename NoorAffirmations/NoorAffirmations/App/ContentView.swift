@@ -2,6 +2,8 @@
 //  ContentView.swift
 //  NoorAffirmations
 //
+//  Main tab navigation with soft pastel custom tab bar
+//
 
 import SwiftUI
 
@@ -15,7 +17,6 @@ struct ContentView: View {
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            // Main content
             Group {
                 switch selectedTab {
                 case .home:
@@ -39,7 +40,6 @@ struct ContentView: View {
 
 struct CustomTabBar: View {
     @Binding var selectedTab: ContentView.Tab
-    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         HStack(spacing: 0) {
@@ -87,9 +87,9 @@ struct CustomTabBar: View {
         .padding(.top, 12)
         .padding(.bottom, 28)
         .background(
-            RoundedRectangle(cornerRadius: 30, style: .continuous)
-                .fill(.ultraThinMaterial)
-                .shadow(color: .black.opacity(0.1), radius: 20, x: 0, y: -5)
+            RoundedRectangle(cornerRadius: 28, style: .continuous)
+                .fill(Color.white)
+                .shadow(color: Color.noorText.opacity(0.06), radius: 20, x: 0, y: -5)
         )
         .padding(.horizontal, 16)
         .padding(.bottom, 8)
@@ -106,18 +106,18 @@ struct TabBarButton: View {
         Button(action: action) {
             VStack(spacing: 4) {
                 Image(systemName: icon)
-                    .font(.system(size: 22, weight: isSelected ? .semibold : .regular))
-                    .foregroundStyle(isSelected ? Color.accentGold : .secondary)
+                    .font(.system(size: 20, weight: isSelected ? .semibold : .regular))
+                    .foregroundStyle(isSelected ? Color.noorAccent : Color.noorTextTertiary)
 
                 Text(title)
                     .font(.system(size: 10, weight: isSelected ? .semibold : .regular))
-                    .foregroundStyle(isSelected ? Color.accentGold : .secondary)
+                    .foregroundStyle(isSelected ? Color.noorAccent : Color.noorTextTertiary)
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 8)
             .background(
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(isSelected ? Color.accentGold.opacity(0.15) : .clear)
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .fill(isSelected ? Color.noorAccent.opacity(0.1) : .clear)
             )
         }
         .buttonStyle(.plain)

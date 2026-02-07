@@ -2,6 +2,8 @@
 //  NotificationService.swift
 //  NoorAffirmations
 //
+//  Daily notification scheduling — morning or evening reminders
+//
 
 import UserNotifications
 
@@ -18,12 +20,12 @@ class NotificationService {
         }
     }
 
-    func scheduleDailyNotification(at time: Date) {
+    func scheduleDailyNotification(at time: Date, isMorning: Bool) {
         let center = UNUserNotificationCenter.current()
         center.removeAllPendingNotificationRequests()
 
         let content = UNMutableNotificationContent()
-        content.title = "Your Daily Noor"
+        content.title = isMorning ? "Bismillah, good morning" : "A moment of peace"
         content.body = getDailyAffirmationPreview()
         content.sound = .default
 
@@ -50,7 +52,7 @@ class NotificationService {
 
     private func getDailyAffirmationPreview() -> String {
         let quote = QuotesData.dailyQuote
-        let preview = String(quote.textEnglish.prefix(100))
-        return preview.count < quote.textEnglish.count ? preview + "..." : preview
+        let preview = String(quote.text.prefix(120))
+        return preview.count < quote.text.count ? preview + "..." : preview
     }
 }

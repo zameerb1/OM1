@@ -2,75 +2,60 @@
 //  QuoteCardView.swift
 //  NoorAffirmations
 //
+//  Soft, minimal affirmation card — Glow-inspired design
+//
 
 import SwiftUI
 
 struct QuoteCardView: View {
     let quote: Quote
-    var showArabic: Bool = true
     var isCompact: Bool = false
 
     @State private var isAppearing = false
 
     var body: some View {
-        VStack(spacing: isCompact ? 16 : 24) {
-            // Decorative Islamic pattern
+        VStack(spacing: isCompact ? 20 : 32) {
+            // Decorative top element
             if !isCompact {
                 decorativeHeader
             }
 
-            // Arabic text (if available)
-            if showArabic, let arabic = quote.textArabic {
-                Text(arabic)
-                    .font(.system(size: isCompact ? 18 : 22, weight: .medium))
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(.white.opacity(0.9))
-                    .lineSpacing(8)
-                    .padding(.horizontal, 8)
-            }
-
-            // English text
-            Text(quote.textEnglish)
-                .font(.system(size: isCompact ? 16 : 20, weight: .regular, design: .serif))
+            // Affirmation text
+            Text(quote.text)
+                .font(.system(size: isCompact ? 18 : 24, weight: .medium, design: .serif))
                 .multilineTextAlignment(.center)
-                .foregroundStyle(.white)
-                .lineSpacing(6)
-                .padding(.horizontal, 8)
+                .foregroundStyle(Color.noorText)
+                .lineSpacing(isCompact ? 6 : 10)
+                .padding(.horizontal, isCompact ? 4 : 12)
 
-            // Source and reference
-            VStack(spacing: 4) {
-                Text("— \(quote.source)")
-                    .font(.system(size: isCompact ? 12 : 14, weight: .semibold))
-                    .foregroundStyle(Color.accentGold)
-
-                if let reference = quote.reference {
-                    Text(reference)
-                        .font(.system(size: isCompact ? 10 : 12, weight: .regular))
-                        .foregroundStyle(.white.opacity(0.6))
-                }
+            // Inspiration reference (if present)
+            if let inspiration = quote.inspiration {
+                Text(inspiration)
+                    .font(.system(size: isCompact ? 11 : 13, weight: .regular))
+                    .foregroundStyle(Color.noorTextSecondary)
+                    .multilineTextAlignment(.center)
             }
-            .padding(.top, 8)
 
             // Category badge
             if !isCompact {
                 categoryBadge
             }
         }
-        .padding(isCompact ? 20 : 32)
+        .padding(isCompact ? 24 : 36)
         .frame(maxWidth: .infinity)
         .background(cardBackground)
-        .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
-        .shadow(color: .black.opacity(0.3), radius: 20, x: 0, y: 10)
+        .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
+        .shadow(color: Color.noorText.opacity(0.06), radius: 24, x: 0, y: 12)
         .opacity(isAppearing ? 1 : 0)
-        .scaleEffect(isAppearing ? 1 : 0.95)
+        .scaleEffect(isAppearing ? 1 : 0.96)
         .onAppear {
-            withAnimation(.easeOut(duration: 0.4)) {
+            withAnimation(.easeOut(duration: 0.5)) {
                 isAppearing = true
             }
         }
         .onChange(of: quote.id) { _, _ in
             isAppearing = false
-            withAnimation(.easeOut(duration: 0.3)) {
+            withAnimation(.easeOut(duration: 0.4)) {
                 isAppearing = true
             }
         }
@@ -78,73 +63,61 @@ struct QuoteCardView: View {
 
     // MARK: - Decorative Header
     private var decorativeHeader: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 12) {
             decorativeLine
-            Image(systemName: "star.fill")
-                .font(.system(size: 10))
-                .foregroundStyle(Color.accentGold)
+            Image(systemName: quote.category.icon)
+                .font(.system(size: 12, weight: .medium))
+                .foregroundStyle(Color.noorAccent)
             decorativeLine
         }
-        .padding(.bottom, 8)
     }
 
     private var decorativeLine: some View {
         Rectangle()
             .fill(
                 LinearGradient(
-                    colors: [.clear, Color.accentGold.opacity(0.5), .clear],
+                    colors: [.clear, Color.noorAccentSoft, .clear],
                     startPoint: .leading,
                     endPoint: .trailing
                 )
             )
-            .frame(height: 1)
+            .frame(height: 0.5)
     }
 
     // MARK: - Category Badge
     private var categoryBadge: some View {
-        HStack(spacing: 6) {
-            Image(systemName: quote.category.icon)
-                .font(.system(size: 10))
-            Text(quote.category.rawValue)
-                .font(.system(size: 11, weight: .medium))
-        }
-        .foregroundStyle(.white.opacity(0.7))
-        .padding(.horizontal, 12)
-        .padding(.vertical, 6)
-        .background(
-            Capsule()
-                .fill(.white.opacity(0.1))
-        )
+        Text(quote.category.rawValue)
+            .font(.system(size: 11, weight: .medium, design: .rounded))
+            .foregroundStyle(Color.noorTextSecondary)
+            .padding(.horizontal, 14)
+            .padding(.vertical, 6)
+            .background(
+                Capsule()
+                    .fill(Color.noorSoftGray)
+            )
     }
 
     // MARK: - Card Background
     private var cardBackground: some View {
         ZStack {
-            // Base gradient
-            LinearGradient.forCategory(quote.category)
-                .opacity(0.9)
+            // Soft gradient base
+            LinearGradient.backgroundForCategory(quote.category)
 
-            // Overlay pattern
+            // Subtle decorative circles
             GeometryReader { geometry in
-                ZStack {
-                    // Top-right decorative element
-                    Circle()
-                        .fill(.white.opacity(0.05))
-                        .frame(width: 200, height: 200)
-                        .offset(x: geometry.size.width * 0.4, y: -100)
+                Circle()
+                    .fill(Color.white.opacity(0.4))
+                    .frame(width: 180, height: 180)
+                    .offset(x: geometry.size.width * 0.35, y: -60)
+                    .blur(radius: 40)
 
-                    // Bottom-left decorative element
-                    Circle()
-                        .fill(.white.opacity(0.03))
-                        .frame(width: 150, height: 150)
-                        .offset(x: -geometry.size.width * 0.3, y: geometry.size.height * 0.6)
-                }
+                Circle()
+                    .fill(Color.white.opacity(0.3))
+                    .frame(width: 120, height: 120)
+                    .offset(x: -40, y: geometry.size.height * 0.6)
+                    .blur(radius: 30)
             }
             .clipped()
-
-            // Glass effect overlay
-            Rectangle()
-                .fill(.ultraThinMaterial.opacity(0.1))
         }
     }
 }
@@ -155,45 +128,38 @@ struct MiniQuoteCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            // Quote text preview
-            Text(quote.textEnglish)
+            Text(quote.text)
                 .font(.system(size: 14, weight: .regular, design: .serif))
-                .foregroundStyle(.white)
+                .foregroundStyle(Color.noorText)
                 .lineLimit(3)
                 .lineSpacing(4)
 
             HStack {
-                // Source
-                Text(quote.source)
-                    .font(.system(size: 11, weight: .semibold))
-                    .foregroundStyle(Color.accentGold)
+                Text(quote.category.rawValue)
+                    .font(.system(size: 11, weight: .medium))
+                    .foregroundStyle(Color.noorTextSecondary)
 
                 Spacer()
 
-                // Category icon
                 Image(systemName: quote.category.icon)
                     .font(.system(size: 12))
-                    .foregroundStyle(.white.opacity(0.6))
+                    .foregroundStyle(Color.noorAccent)
             }
         }
         .padding(16)
         .background(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .fill(
-                    LinearGradient.forCategory(quote.category)
-                        .opacity(0.8)
-                )
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .fill(LinearGradient.backgroundForCategory(quote.category))
         )
     }
 }
 
 #Preview {
     ZStack {
-        Color.black.ignoresSafeArea()
+        Color.noorCream.ignoresSafeArea()
 
         QuoteCardView(
-            quote: QuotesData.dailyQuote,
-            showArabic: true
+            quote: QuotesData.dailyQuote
         )
         .padding(24)
     }

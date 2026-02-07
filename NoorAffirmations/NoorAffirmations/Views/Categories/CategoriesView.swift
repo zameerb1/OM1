@@ -2,6 +2,8 @@
 //  CategoriesView.swift
 //  NoorAffirmations
 //
+//  Browse affirmations by theme — soft pastel grid
+//
 
 import SwiftUI
 
@@ -18,7 +20,7 @@ struct CategoriesView: View {
         NavigationStack {
             ZStack {
                 // Background
-                backgroundGradient
+                Color.noorCream
                     .ignoresSafeArea()
 
                 ScrollView(showsIndicators: false) {
@@ -48,29 +50,16 @@ struct CategoriesView: View {
         }
     }
 
-    // MARK: - Background
-    private var backgroundGradient: some View {
-        LinearGradient(
-            colors: [
-                Color(hex: "#0D1B2A"),
-                Color(hex: "#1B3A4B"),
-                Color(hex: "#274653")
-            ],
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
-        )
-    }
-
     // MARK: - Header
     private var headerSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Categories")
                 .font(.system(size: 32, weight: .bold, design: .rounded))
-                .foregroundStyle(.white)
+                .foregroundStyle(Color.noorText)
 
             Text("Explore affirmations by theme")
                 .font(.system(size: 15, weight: .regular))
-                .foregroundStyle(.white.opacity(0.6))
+                .foregroundStyle(Color.noorTextSecondary)
         }
     }
 }
@@ -85,25 +74,32 @@ struct CategoryCard: View {
             // Icon
             ZStack {
                 Circle()
-                    .fill(.white.opacity(0.15))
-                    .frame(width: 48, height: 48)
+                    .fill(Color.white.opacity(0.6))
+                    .frame(width: 44, height: 44)
 
                 Image(systemName: category.icon)
-                    .font(.system(size: 22, weight: .semibold))
-                    .foregroundStyle(.white)
+                    .font(.system(size: 20, weight: .medium))
+                    .foregroundStyle(Color.noorText.opacity(0.7))
             }
 
-            // Title
-            Text(category.rawValue)
-                .font(.system(size: 15, weight: .bold))
-                .foregroundStyle(.white)
-                .lineLimit(2)
-                .minimumScaleFactor(0.8)
+            VStack(alignment: .leading, spacing: 4) {
+                // Title
+                Text(category.rawValue)
+                    .font(.system(size: 15, weight: .semibold, design: .rounded))
+                    .foregroundStyle(Color.noorText)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.8)
+
+                // Arabic subtitle
+                Text(category.subtitle)
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundStyle(Color.noorTextSecondary)
+            }
 
             // Description
             Text(category.description)
                 .font(.system(size: 11, weight: .regular))
-                .foregroundStyle(.white.opacity(0.7))
+                .foregroundStyle(Color.noorTextTertiary)
                 .lineLimit(2)
 
             Spacer(minLength: 0)
@@ -112,25 +108,26 @@ struct CategoryCard: View {
             let count = QuotesData.quotes(for: category).count
             Text("\(count) affirmations")
                 .font(.system(size: 10, weight: .medium))
-                .foregroundStyle(.white.opacity(0.5))
+                .foregroundStyle(Color.noorTextTertiary)
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .frame(height: 180)
+        .frame(height: 200)
         .background(
             ZStack {
-                LinearGradient.forCategory(category)
+                LinearGradient.backgroundForCategory(category)
 
                 // Decorative circle
                 Circle()
-                    .fill(.white.opacity(0.1))
-                    .frame(width: 100, height: 100)
-                    .offset(x: 60, y: -30)
+                    .fill(Color.white.opacity(0.3))
+                    .frame(width: 80, height: 80)
+                    .offset(x: 50, y: -20)
+                    .blur(radius: 20)
             }
         )
-        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-        .shadow(color: Color(hex: category.gradientColors[0]).opacity(0.3), radius: 10, x: 0, y: 5)
-        .scaleEffect(isPressed ? 0.95 : 1)
+        .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+        .shadow(color: Color.noorText.opacity(0.04), radius: 12, x: 0, y: 6)
+        .scaleEffect(isPressed ? 0.96 : 1)
         .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isPressed)
         .onLongPressGesture(minimumDuration: .infinity, pressing: { pressing in
             isPressed = pressing

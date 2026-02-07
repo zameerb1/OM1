@@ -2,19 +2,19 @@
 //  FavoritesView.swift
 //  NoorAffirmations
 //
+//  Saved affirmations — soft, minimal list
+//
 
 import SwiftUI
 
 struct FavoritesView: View {
     @EnvironmentObject var favoritesManager: FavoritesManager
-    @EnvironmentObject var settingsManager: SettingsManager
     @State private var selectedQuote: Quote?
 
     var body: some View {
         NavigationStack {
             ZStack {
-                // Background
-                backgroundGradient
+                Color.noorCream
                     .ignoresSafeArea()
 
                 if favoritesManager.favorites.isEmpty {
@@ -28,7 +28,7 @@ struct FavoritesView: View {
                                 .padding(.top, 16)
 
                             // Favorites list
-                            LazyVStack(spacing: 16) {
+                            LazyVStack(spacing: 12) {
                                 ForEach(favoritesManager.favorites) { quote in
                                     FavoriteQuoteRow(quote: quote)
                                         .onTapGesture {
@@ -60,22 +60,8 @@ struct FavoritesView: View {
             .sheet(item: $selectedQuote) { quote in
                 QuoteDetailSheet(quote: quote)
                     .environmentObject(favoritesManager)
-                    .environmentObject(settingsManager)
             }
         }
-    }
-
-    // MARK: - Background
-    private var backgroundGradient: some View {
-        LinearGradient(
-            colors: [
-                Color(hex: "#0D1B2A"),
-                Color(hex: "#1B3A4B"),
-                Color(hex: "#274653")
-            ],
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
-        )
     }
 
     // MARK: - Header
@@ -84,26 +70,26 @@ struct FavoritesView: View {
             HStack {
                 Text("Favorites")
                     .font(.system(size: 32, weight: .bold, design: .rounded))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(Color.noorText)
 
                 Spacer()
 
                 if !favoritesManager.favorites.isEmpty {
                     Text("\(favoritesManager.favorites.count)")
-                        .font(.system(size: 14, weight: .bold))
-                        .foregroundStyle(.white)
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(Color.noorAccent)
                         .padding(.horizontal, 12)
                         .padding(.vertical, 6)
                         .background(
                             Capsule()
-                                .fill(Color.accentGold.opacity(0.3))
+                                .fill(Color.noorAccentSoft.opacity(0.3))
                         )
                 }
             }
 
             Text("Your saved affirmations")
                 .font(.system(size: 15, weight: .regular))
-                .foregroundStyle(.white.opacity(0.6))
+                .foregroundStyle(Color.noorTextSecondary)
         }
     }
 
@@ -111,33 +97,29 @@ struct FavoritesView: View {
     private var emptyState: some View {
         VStack(spacing: 24) {
             Image(systemName: "heart.circle")
-                .font(.system(size: 80, weight: .light))
-                .foregroundStyle(Color.accentGold.opacity(0.5))
+                .font(.system(size: 64, weight: .thin))
+                .foregroundStyle(Color.noorAccentSoft)
 
             VStack(spacing: 8) {
                 Text("No Favorites Yet")
-                    .font(.system(size: 24, weight: .bold, design: .rounded))
-                    .foregroundStyle(.white)
+                    .font(.system(size: 22, weight: .semibold, design: .rounded))
+                    .foregroundStyle(Color.noorText)
 
-                Text("Tap the heart icon on any quote to save it here")
+                Text("Tap the heart on any affirmation\nto save it here")
                     .font(.system(size: 15, weight: .regular))
-                    .foregroundStyle(.white.opacity(0.6))
+                    .foregroundStyle(Color.noorTextSecondary)
                     .multilineTextAlignment(.center)
-                    .padding(.horizontal, 40)
             }
         }
     }
 
     // MARK: - Share
     private func shareQuote(_ quote: Quote) {
-        var text = "\"\(quote.textEnglish)\"\n\n"
-        if let arabic = quote.textArabic {
-            text += "\(arabic)\n\n"
+        var text = "\"\(quote.text)\"\n\n"
+        if let inspiration = quote.inspiration {
+            text += "\(inspiration)\n\n"
         }
-        text += "— \(quote.source)"
-        if let reference = quote.reference {
-            text += " (\(reference))"
-        }
+        text += "— Noor Affirmations"
 
         let activityVC = UIActivityViewController(activityItems: [text], applicationActivities: nil)
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
@@ -152,48 +134,37 @@ struct FavoriteQuoteRow: View {
     let quote: Quote
 
     var body: some View {
-        HStack(spacing: 16) {
-            // Category indicator
-            RoundedRectangle(cornerRadius: 4)
+        HStack(spacing: 14) {
+            // Category color indicator
+            RoundedRectangle(cornerRadius: 3)
                 .fill(LinearGradient.forCategory(quote.category))
-                .frame(width: 4)
+                .frame(width: 3)
 
             VStack(alignment: .leading, spacing: 8) {
-                Text(quote.textEnglish)
+                Text(quote.text)
                     .font(.system(size: 15, weight: .regular, design: .serif))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(Color.noorText)
                     .lineLimit(3)
                     .lineSpacing(4)
 
                 HStack {
-                    Text(quote.source)
-                        .font(.system(size: 12, weight: .semibold))
-                        .foregroundStyle(Color.accentGold)
-
-                    if let reference = quote.reference {
-                        Text("•")
-                            .foregroundStyle(.white.opacity(0.4))
-                        Text(reference)
-                            .font(.system(size: 11, weight: .regular))
-                            .foregroundStyle(.white.opacity(0.5))
-                    }
+                    Text(quote.category.rawValue)
+                        .font(.system(size: 11, weight: .medium))
+                        .foregroundStyle(Color.noorTextSecondary)
 
                     Spacer()
 
                     Image(systemName: quote.category.icon)
                         .font(.system(size: 12))
-                        .foregroundStyle(.white.opacity(0.4))
+                        .foregroundStyle(Color.noorAccent)
                 }
             }
         }
         .padding(16)
         .background(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .fill(.white.opacity(0.05))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .strokeBorder(.white.opacity(0.1), lineWidth: 1)
-                )
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .fill(Color.white)
+                .shadow(color: Color.noorText.opacity(0.04), radius: 8, x: 0, y: 4)
         )
     }
 }
@@ -202,54 +173,46 @@ struct FavoriteQuoteRow: View {
 struct QuoteDetailSheet: View {
     let quote: Quote
     @EnvironmentObject var favoritesManager: FavoritesManager
-    @EnvironmentObject var settingsManager: SettingsManager
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
         ZStack {
-            // Background
-            LinearGradient.forCategory(quote.category)
-                .ignoresSafeArea()
-
-            Color.black.opacity(0.3)
+            LinearGradient.backgroundForCategory(quote.category)
                 .ignoresSafeArea()
 
             VStack(spacing: 24) {
                 // Handle bar
                 RoundedRectangle(cornerRadius: 3)
-                    .fill(.white.opacity(0.3))
+                    .fill(Color.noorTextTertiary)
                     .frame(width: 40, height: 5)
                     .padding(.top, 12)
 
                 Spacer()
 
                 // Quote card
-                QuoteCardView(
-                    quote: quote,
-                    showArabic: settingsManager.showArabicText
-                )
-                .padding(.horizontal, 24)
+                QuoteCardView(quote: quote)
+                    .padding(.horizontal, 24)
 
                 Spacer()
 
                 // Actions
-                HStack(spacing: 24) {
+                HStack(spacing: 16) {
                     Button {
                         favoritesManager.removeFavorite(quote)
                         dismiss()
                     } label: {
                         VStack(spacing: 8) {
                             Image(systemName: "heart.slash")
-                                .font(.system(size: 24))
+                                .font(.system(size: 22))
                             Text("Remove")
                                 .font(.system(size: 12, weight: .medium))
                         }
-                        .foregroundStyle(.white.opacity(0.8))
+                        .foregroundStyle(Color.noorText.opacity(0.6))
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
                         .background(
                             RoundedRectangle(cornerRadius: 16)
-                                .fill(.white.opacity(0.1))
+                                .fill(Color.white.opacity(0.6))
                         )
                     }
 
@@ -258,16 +221,16 @@ struct QuoteDetailSheet: View {
                     } label: {
                         VStack(spacing: 8) {
                             Image(systemName: "square.and.arrow.up")
-                                .font(.system(size: 24))
+                                .font(.system(size: 22))
                             Text("Share")
                                 .font(.system(size: 12, weight: .medium))
                         }
-                        .foregroundStyle(.white)
+                        .foregroundStyle(Color.noorText)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
                         .background(
                             RoundedRectangle(cornerRadius: 16)
-                                .fill(Color.accentGold.opacity(0.3))
+                                .fill(Color.noorAccentSoft.opacity(0.4))
                         )
                     }
                 }
@@ -280,14 +243,11 @@ struct QuoteDetailSheet: View {
     }
 
     private func shareQuote() {
-        var text = "\"\(quote.textEnglish)\"\n\n"
-        if let arabic = quote.textArabic {
-            text += "\(arabic)\n\n"
+        var text = "\"\(quote.text)\"\n\n"
+        if let inspiration = quote.inspiration {
+            text += "\(inspiration)\n\n"
         }
-        text += "— \(quote.source)"
-        if let reference = quote.reference {
-            text += " (\(reference))"
-        }
+        text += "— Noor Affirmations"
 
         let activityVC = UIActivityViewController(activityItems: [text], applicationActivities: nil)
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
@@ -300,5 +260,4 @@ struct QuoteDetailSheet: View {
 #Preview {
     FavoritesView()
         .environmentObject(FavoritesManager())
-        .environmentObject(SettingsManager())
 }

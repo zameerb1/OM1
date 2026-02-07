@@ -2,6 +2,8 @@
 //  CategoryDetailView.swift
 //  NoorAffirmations
 //
+//  Paginated view of affirmations within a category
+//
 
 import SwiftUI
 
@@ -9,11 +11,9 @@ struct CategoryDetailView: View {
     let category: QuoteCategory
     @EnvironmentObject var quoteManager: QuoteManager
     @EnvironmentObject var favoritesManager: FavoritesManager
-    @EnvironmentObject var settingsManager: SettingsManager
     @Environment(\.dismiss) var dismiss
 
     @State private var currentIndex = 0
-    @State private var dragOffset: CGFloat = 0
 
     private var quotes: [Quote] {
         QuotesData.quotes(for: category)
@@ -21,12 +21,8 @@ struct CategoryDetailView: View {
 
     var body: some View {
         ZStack {
-            // Background
-            LinearGradient.forCategory(category)
-                .ignoresSafeArea()
-
-            // Overlay
-            Color.black.opacity(0.3)
+            // Soft background for category
+            LinearGradient.backgroundForCategory(category)
                 .ignoresSafeArea()
 
             VStack(spacing: 0) {
@@ -41,16 +37,13 @@ struct CategoryDetailView: View {
                 if !quotes.isEmpty {
                     TabView(selection: $currentIndex) {
                         ForEach(Array(quotes.enumerated()), id: \.element.id) { index, quote in
-                            QuoteCardView(
-                                quote: quote,
-                                showArabic: settingsManager.showArabicText
-                            )
-                            .padding(.horizontal, 24)
-                            .tag(index)
+                            QuoteCardView(quote: quote)
+                                .padding(.horizontal, 24)
+                                .tag(index)
                         }
                     }
                     .tabViewStyle(.page(indexDisplayMode: .never))
-                    .frame(maxHeight: 500)
+                    .frame(maxHeight: 480)
                 }
 
                 Spacer()
@@ -69,11 +62,11 @@ struct CategoryDetailView: View {
                 } label: {
                     HStack(spacing: 4) {
                         Image(systemName: "chevron.left")
-                            .font(.system(size: 16, weight: .semibold))
+                            .font(.system(size: 16, weight: .medium))
                         Text("Back")
                             .font(.system(size: 16, weight: .medium))
                     }
-                    .foregroundStyle(.white)
+                    .foregroundStyle(Color.noorText)
                 }
             }
         }
@@ -86,17 +79,17 @@ struct CategoryDetailView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(spacing: 8) {
                         Image(systemName: category.icon)
-                            .font(.system(size: 18, weight: .semibold))
-                            .foregroundStyle(Color.accentGold)
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundStyle(Color.noorAccent)
 
                         Text(category.rawValue)
                             .font(.system(size: 24, weight: .bold, design: .rounded))
-                            .foregroundStyle(.white)
+                            .foregroundStyle(Color.noorText)
                     }
 
                     Text(category.description)
                         .font(.system(size: 13, weight: .regular))
-                        .foregroundStyle(.white.opacity(0.7))
+                        .foregroundStyle(Color.noorTextSecondary)
                 }
 
                 Spacer()
@@ -109,66 +102,48 @@ struct CategoryDetailView: View {
         VStack(spacing: 20) {
             // Progress indicator
             if !quotes.isEmpty {
-                HStack(spacing: 4) {
-                    Text("\(currentIndex + 1)")
-                        .font(.system(size: 14, weight: .bold))
-                        .foregroundStyle(Color.accentGold)
-
-                    Text("of \(quotes.count)")
-                        .font(.system(size: 14, weight: .regular))
-                        .foregroundStyle(.white.opacity(0.6))
+                HStack(spacing: 6) {
+                    ForEach(0..<quotes.count, id: \.self) { index in
+                        Circle()
+                            .fill(index == currentIndex ? Color.noorAccent : Color.noorTextTertiary.opacity(0.4))
+                            .frame(width: index == currentIndex ? 8 : 6, height: index == currentIndex ? 8 : 6)
+                            .animation(.spring(response: 0.3), value: currentIndex)
+                    }
                 }
             }
 
             // Action buttons
-            HStack(spacing: 40) {
+            HStack(spacing: 36) {
                 // Previous
-                Button {
+                SoftCircleButton(icon: "chevron.left") {
                     withAnimation {
                         if currentIndex > 0 {
                             currentIndex -= 1
                         }
                     }
-                } label: {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 20, weight: .semibold))
-                        .foregroundStyle(.white)
-                        .frame(width: 50, height: 50)
-                        .background(Circle().fill(.white.opacity(0.15)))
                 }
-                .disabled(currentIndex == 0)
-                .opacity(currentIndex == 0 ? 0.4 : 1)
 
                 // Favorite
-                Button {
-                    if !quotes.isEmpty {
-                        favoritesManager.toggleFavorite(quotes[currentIndex])
+                if !quotes.isEmpty {
+                    let isFavorite = favoritesManager.isFavorite(quotes[currentIndex])
+                    SoftCircleButton(
+                        icon: isFavorite ? "heart.fill" : "heart",
+                        isAccent: isFavorite
+                    ) {
+                        withAnimation(.spring(response: 0.3)) {
+                            favoritesManager.toggleFavorite(quotes[currentIndex])
+                        }
                     }
-                } label: {
-                    let isFavorite = !quotes.isEmpty && favoritesManager.isFavorite(quotes[currentIndex])
-                    Image(systemName: isFavorite ? "heart.fill" : "heart")
-                        .font(.system(size: 24, weight: .semibold))
-                        .foregroundStyle(isFavorite ? Color.accentGold : .white)
-                        .frame(width: 60, height: 60)
-                        .background(Circle().fill(.white.opacity(0.2)))
                 }
 
                 // Next
-                Button {
+                SoftCircleButton(icon: "chevron.right") {
                     withAnimation {
                         if currentIndex < quotes.count - 1 {
                             currentIndex += 1
                         }
                     }
-                } label: {
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 20, weight: .semibold))
-                        .foregroundStyle(.white)
-                        .frame(width: 50, height: 50)
-                        .background(Circle().fill(.white.opacity(0.15)))
                 }
-                .disabled(currentIndex == quotes.count - 1)
-                .opacity(currentIndex == quotes.count - 1 ? 0.4 : 1)
             }
         }
     }
@@ -176,9 +151,8 @@ struct CategoryDetailView: View {
 
 #Preview {
     NavigationStack {
-        CategoryDetailView(category: .patience)
+        CategoryDetailView(category: .anxietyCalm)
             .environmentObject(QuoteManager())
             .environmentObject(FavoritesManager())
-            .environmentObject(SettingsManager())
     }
 }

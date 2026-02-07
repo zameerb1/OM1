@@ -14,7 +14,6 @@ struct NoorAffirmationsApp: App {
     @StateObject private var settingsManager = SettingsManager()
 
     init() {
-        // Request notification permissions on launch
         NotificationService.shared.requestPermission()
     }
 
@@ -24,7 +23,6 @@ struct NoorAffirmationsApp: App {
                 .environmentObject(quoteManager)
                 .environmentObject(favoritesManager)
                 .environmentObject(settingsManager)
-                .preferredColorScheme(settingsManager.isDarkMode ? .dark : nil)
         }
     }
 }
