@@ -2,7 +2,7 @@
 //  QuotesData.swift
 //  NoorAffirmations
 //
-//  A collection of Islamic quotes from Quran and Hadith
+//  First-person Islamic affirmations for daily spiritual well-being
 //
 
 import Foundation
@@ -10,415 +10,214 @@ import Foundation
 struct QuotesData {
 
     static let allQuotes: [Quote] = [
-        // MARK: - Patience (Sabr)
+        // MARK: - Anxiety & Calm (Sakina)
         Quote(
-            textArabic: "إِنَّ اللَّهَ مَعَ الصَّابِرِينَ",
-            textEnglish: "Indeed, Allah is with the patient.",
-            source: "Quran",
-            category: .patience,
-            reference: "Surah Al-Baqarah 2:153"
+            text: "I breathe in peace, knowing that Allah's plan for me is already perfect.",
+            inspiration: "Verily, in the remembrance of Allah do hearts find rest. — 13:28",
+            category: .anxietyAndCalm
         ),
         Quote(
-            textArabic: "فَاصْبِرْ صَبْرًا جَمِيلًا",
-            textEnglish: "So be patient with gracious patience.",
-            source: "Quran",
-            category: .patience,
-            reference: "Surah Al-Ma'arij 70:5"
+            text: "I release my worries to the One who holds the entire universe in balance.",
+            category: .anxietyAndCalm
         ),
         Quote(
-            textEnglish: "Patience is the key to relief.",
-            source: "Hadith",
-            category: .patience,
-            reference: "Prophet Muhammad (PBUH)"
+            text: "I am not alone in this moment. Allah is closer to me than my own heartbeat.",
+            inspiration: "We are nearer to him than his jugular vein. — 50:16",
+            category: .anxietyAndCalm
         ),
         Quote(
-            textArabic: "وَاصْبِرْ وَمَا صَبْرُكَ إِلَّا بِاللَّهِ",
-            textEnglish: "And be patient, for your patience is only through Allah.",
-            source: "Quran",
-            category: .patience,
-            reference: "Surah An-Nahl 16:127"
+            text: "I choose calm over chaos, because my soul belongs to the Most Peaceful.",
+            category: .anxietyAndCalm
         ),
         Quote(
-            textEnglish: "No one has been given a gift better and more comprehensive than patience.",
-            source: "Hadith",
-            category: .patience,
-            reference: "Sahih Bukhari"
+            text: "This feeling will pass. I am safe in the care of Ar-Rahman.",
+            category: .anxietyAndCalm
         ),
         Quote(
-            textArabic: "وَبَشِّرِ الصَّابِرِينَ",
-            textEnglish: "And give good tidings to the patient.",
-            source: "Quran",
-            category: .patience,
-            reference: "Surah Al-Baqarah 2:155"
+            text: "I do not need to carry what Allah has not asked me to carry.",
+            category: .anxietyAndCalm
         ),
         Quote(
-            textEnglish: "Wonderful is the affair of the believer, for there is good for him in every matter. If he is happy, he thanks Allah and thus there is good for him. If he is harmed, he shows patience and thus there is good for him.",
-            source: "Hadith",
-            category: .patience,
-            reference: "Sahih Muslim"
-        ),
-
-        // MARK: - Gratitude (Shukr)
-        Quote(
-            textArabic: "لَئِن شَكَرْتُمْ لَأَزِيدَنَّكُمْ",
-            textEnglish: "If you are grateful, I will surely increase you in favor.",
-            source: "Quran",
-            category: .gratitude,
-            reference: "Surah Ibrahim 14:7"
+            text: "My anxiety does not define me. I am defined by the One who created me with love.",
+            category: .anxietyAndCalm
         ),
         Quote(
-            textEnglish: "He who does not thank people, does not thank Allah.",
-            source: "Hadith",
-            category: .gratitude,
-            reference: "Abu Dawud"
-        ),
-        Quote(
-            textArabic: "وَاشْكُرُوا لِلَّهِ إِن كُنتُمْ إِيَّاهُ تَعْبُدُونَ",
-            textEnglish: "And be grateful to Allah if it is Him you worship.",
-            source: "Quran",
-            category: .gratitude,
-            reference: "Surah Al-Baqarah 2:172"
-        ),
-        Quote(
-            textEnglish: "Look at those below you and do not look at those above you, for it is more likely that you will not belittle the blessings of Allah.",
-            source: "Hadith",
-            category: .gratitude,
-            reference: "Sahih Muslim"
-        ),
-        Quote(
-            textArabic: "وَإِذْ تَأَذَّنَ رَبُّكُمْ",
-            textEnglish: "Whoever is grateful, it is for his own soul's benefit.",
-            source: "Quran",
-            category: .gratitude,
-            reference: "Surah An-Naml 27:40"
-        ),
-        Quote(
-            textEnglish: "The first thing for which people will be held accountable on the Day of Resurrection will be their prayers. If they are found to be perfect, they will be recorded as such. If something is lacking, Allah will say: Look and see if My servant has any voluntary prayers, and use them to complete his obligatory prayers.",
-            source: "Hadith",
-            category: .gratitude,
-            reference: "Abu Dawud"
-        ),
-
-        // MARK: - Faith (Iman)
-        Quote(
-            textArabic: "آمَنَ الرَّسُولُ بِمَا أُنزِلَ إِلَيْهِ مِن رَّبِّهِ وَالْمُؤْمِنُونَ",
-            textEnglish: "The Messenger has believed in what was revealed to him from his Lord, and so have the believers.",
-            source: "Quran",
-            category: .faith,
-            reference: "Surah Al-Baqarah 2:285"
-        ),
-        Quote(
-            textEnglish: "Faith wears out in the heart, just as clothes wear out. So ask Allah to renew the faith in your hearts.",
-            source: "Hadith",
-            category: .faith,
-            reference: "Al-Hakim"
-        ),
-        Quote(
-            textArabic: "إِنَّمَا الْمُؤْمِنُونَ الَّذِينَ إِذَا ذُكِرَ اللَّهُ وَجِلَتْ قُلُوبُهُمْ",
-            textEnglish: "The believers are only those who, when Allah is mentioned, their hearts become fearful.",
-            source: "Quran",
-            category: .faith,
-            reference: "Surah Al-Anfal 8:2"
-        ),
-        Quote(
-            textEnglish: "None of you truly believes until he wishes for his brother what he wishes for himself.",
-            source: "Hadith",
-            category: .faith,
-            reference: "Sahih Bukhari & Muslim"
-        ),
-        Quote(
-            textArabic: "وَمَن يُؤْمِن بِاللَّهِ يَهْدِ قَلْبَهُ",
-            textEnglish: "And whoever believes in Allah - He will guide his heart.",
-            source: "Quran",
-            category: .faith,
-            reference: "Surah At-Taghabun 64:11"
-        ),
-        Quote(
-            textEnglish: "The most complete of the believers in faith is the one with the best character among them.",
-            source: "Hadith",
-            category: .faith,
-            reference: "Tirmidhi"
+            text: "I allow myself to slow down. Stillness is not laziness — it is where I find Allah.",
+            category: .anxietyAndCalm
         ),
 
         // MARK: - Trust in Allah (Tawakkul)
         Quote(
-            textArabic: "وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ",
-            textEnglish: "And whoever relies upon Allah - then He is sufficient for him.",
-            source: "Quran",
-            category: .trust,
-            reference: "Surah At-Talaq 65:3"
+            text: "I trust that Allah is guiding me, even when I cannot see the path.",
+            category: .trustInAllah
         ),
         Quote(
-            textEnglish: "If you all relied on Allah with true reliance, He would provide for you as He provides for the birds who go out hungry in the morning and return full.",
-            source: "Hadith",
-            category: .trust,
-            reference: "Tirmidhi"
+            text: "What is written for me will never miss me.",
+            category: .trustInAllah
         ),
         Quote(
-            textArabic: "فَتَوَكَّلْ عَلَى اللَّهِ إِنَّكَ عَلَى الْحَقِّ الْمُبِينِ",
-            textEnglish: "So rely upon Allah; indeed, you are upon the clear truth.",
-            source: "Quran",
-            category: .trust,
-            reference: "Surah An-Naml 27:79"
+            text: "I let go of what I cannot control, and I trust the One who controls all things.",
+            category: .trustInAllah
         ),
         Quote(
-            textEnglish: "Tie your camel and trust in Allah.",
-            source: "Hadith",
-            category: .trust,
-            reference: "Tirmidhi"
+            text: "Allah's timing is not my timing, and that is a mercy I am learning to accept.",
+            category: .trustInAllah
         ),
         Quote(
-            textArabic: "وَعَلَى اللَّهِ فَلْيَتَوَكَّلِ الْمُؤْمِنُونَ",
-            textEnglish: "And upon Allah let the believers rely.",
-            source: "Quran",
-            category: .trust,
-            reference: "Surah At-Tawbah 9:51"
+            text: "I tie my camel and place my trust in Allah. I do my part, and He does the rest.",
+            inspiration: "Trust in Allah, but tie your camel. — Tirmidhi",
+            category: .trustInAllah
         ),
         Quote(
-            textEnglish: "Be mindful of Allah and He will protect you. Be mindful of Allah and you will find Him before you. If you ask, ask from Allah. If you seek help, seek help from Allah.",
-            source: "Hadith",
-            category: .trust,
-            reference: "Tirmidhi"
+            text: "Every closed door is Allah protecting me from what was not meant for me.",
+            category: .trustInAllah
+        ),
+        Quote(
+            text: "I do not need to understand the plan to trust the Planner.",
+            category: .trustInAllah
+        ),
+        Quote(
+            text: "When I feel lost, I remember: whoever relies upon Allah, He is sufficient for them.",
+            inspiration: "Whoever relies upon Allah — He is sufficient for him. — 65:3",
+            category: .trustInAllah
         ),
 
-        // MARK: - Peace (Salam)
+        // MARK: - Gratitude (Shukr)
         Quote(
-            textArabic: "أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ",
-            textEnglish: "Verily, in the remembrance of Allah do hearts find rest.",
-            source: "Quran",
-            category: .peace,
-            reference: "Surah Ar-Ra'd 13:28"
+            text: "I woke up today, and that alone is a gift I will not take for granted.",
+            category: .gratitude
         ),
         Quote(
-            textEnglish: "Spread peace, feed the hungry, and pray at night when people are sleeping, you will enter Paradise in peace.",
-            source: "Hadith",
-            category: .peace,
-            reference: "Tirmidhi"
+            text: "I choose to see the blessings, even in the smallest, quietest moments.",
+            category: .gratitude
         ),
         Quote(
-            textArabic: "وَاللَّهُ يَدْعُو إِلَى دَارِ السَّلَامِ",
-            textEnglish: "And Allah invites to the Home of Peace.",
-            source: "Quran",
-            category: .peace,
-            reference: "Surah Yunus 10:25"
+            text: "My heart overflows with thanks, and I know that gratitude only brings more.",
+            inspiration: "If you are grateful, I will surely increase you. — 14:7",
+            category: .gratitude
         ),
         Quote(
-            textEnglish: "The Muslim is the one from whose tongue and hand other Muslims are safe.",
-            source: "Hadith",
-            category: .peace,
-            reference: "Sahih Bukhari"
+            text: "I am grateful not because everything is perfect, but because Allah is perfect.",
+            category: .gratitude
         ),
         Quote(
-            textArabic: "سَلَامٌ قَوْلًا مِّن رَّبٍّ رَّحِيمٍ",
-            textEnglish: "Peace, a word from a Merciful Lord.",
-            source: "Quran",
-            category: .peace,
-            reference: "Surah Ya-Sin 36:58"
+            text: "Alhamdulillah for the breath in my lungs and the hope in my heart.",
+            category: .gratitude
         ),
         Quote(
-            textEnglish: "You will not enter Paradise until you believe, and you will not believe until you love one another. Shall I not tell you of something that, if you do it, you will love one another? Spread peace among yourselves.",
-            source: "Hadith",
-            category: .peace,
-            reference: "Sahih Muslim"
+            text: "I will not compare my blessings to anyone else's. My rizq is uniquely mine.",
+            category: .gratitude
+        ),
+        Quote(
+            text: "Today I notice what I have been overlooking: the warmth of the sun, a kind word, a beating heart.",
+            category: .gratitude
         ),
 
-        // MARK: - Hope (Raja)
+        // MARK: - Healing & Hard Times
         Quote(
-            textArabic: "لَا تَقْنَطُوا مِن رَّحْمَةِ اللَّهِ",
-            textEnglish: "Do not despair of the mercy of Allah.",
-            source: "Quran",
-            category: .hope,
-            reference: "Surah Az-Zumar 39:53"
+            text: "I am allowed to rest. Allah does not burden my soul beyond its capacity.",
+            inspiration: "Allah does not burden a soul beyond that it can bear. — 2:286",
+            category: .healingAndHardTimes
         ),
         Quote(
-            textEnglish: "Allah says: I am as My servant thinks of Me. So let him think of Me as he wishes.",
-            source: "Hadith",
-            category: .hope,
-            reference: "Sahih Bukhari & Muslim"
+            text: "This pain is not permanent. With every hardship comes ease — Allah promised me that.",
+            inspiration: "For indeed, with hardship comes ease. — 94:5",
+            category: .healingAndHardTimes
         ),
         Quote(
-            textArabic: "فَإِنَّ مَعَ الْعُسْرِ يُسْرًا",
-            textEnglish: "For indeed, with hardship comes ease.",
-            source: "Quran",
-            category: .hope,
-            reference: "Surah Ash-Sharh 94:5"
+            text: "I am healing at the pace that is right for me. There is no rush in Allah's mercy.",
+            category: .healingAndHardTimes
         ),
         Quote(
-            textEnglish: "Know that victory comes with patience, relief comes with affliction, and ease comes with hardship.",
-            source: "Hadith",
-            category: .hope,
-            reference: "Tirmidhi"
+            text: "My tears are not weakness. Even the Prophet, peace be upon him, wept.",
+            category: .healingAndHardTimes
         ),
         Quote(
-            textArabic: "وَرَحْمَتِي وَسِعَتْ كُلَّ شَيْءٍ",
-            textEnglish: "My mercy encompasses all things.",
-            source: "Quran",
-            category: .hope,
-            reference: "Surah Al-A'raf 7:156"
+            text: "I am being shaped by this trial, not broken by it. Allah wastes nothing.",
+            category: .healingAndHardTimes
         ),
         Quote(
-            textEnglish: "When Allah created creation, He wrote in His Book, which is with Him above the Throne: My mercy prevails over My wrath.",
-            source: "Hadith",
-            category: .hope,
-            reference: "Sahih Bukhari"
+            text: "I hold on to the belief that what Allah has taken from me, He will replace with something better.",
+            category: .healingAndHardTimes
+        ),
+        Quote(
+            text: "I do not need to be strong every moment. I just need to show up and trust.",
+            category: .healingAndHardTimes
+        ),
+        Quote(
+            text: "My broken pieces are not lost. Allah is the best of menders.",
+            category: .healingAndHardTimes
         ),
 
-        // MARK: - Mercy (Rahma)
+        // MARK: - Confidence & Purpose
         Quote(
-            textArabic: "وَمَا أَرْسَلْنَاكَ إِلَّا رَحْمَةً لِّلْعَالَمِينَ",
-            textEnglish: "And We have not sent you except as a mercy to the worlds.",
-            source: "Quran",
-            category: .mercy,
-            reference: "Surah Al-Anbiya 21:107"
+            text: "My worth is not defined by my productivity, but by my sincerity.",
+            category: .confidenceAndPurpose
         ),
         Quote(
-            textEnglish: "The merciful are shown mercy by the Most Merciful. Be merciful to those on earth, and the One in the heavens will be merciful to you.",
-            source: "Hadith",
-            category: .mercy,
-            reference: "Tirmidhi"
+            text: "I was created with purpose, placed on this earth at exactly the right time.",
+            category: .confidenceAndPurpose
         ),
         Quote(
-            textArabic: "كَتَبَ رَبُّكُمْ عَلَى نَفْسِهِ الرَّحْمَةَ",
-            textEnglish: "Your Lord has decreed upon Himself mercy.",
-            source: "Quran",
-            category: .mercy,
-            reference: "Surah Al-An'am 6:54"
+            text: "I carry the dignity that Allah gave to every child of Adam. No one can take that from me.",
+            inspiration: "We have certainly honored the children of Adam. — 17:70",
+            category: .confidenceAndPurpose
         ),
         Quote(
-            textEnglish: "He who does not show mercy to others, will not be shown mercy.",
-            source: "Hadith",
-            category: .mercy,
-            reference: "Sahih Bukhari & Muslim"
+            text: "I do not need anyone's approval to feel worthy. Allah already declared me honored.",
+            category: .confidenceAndPurpose
         ),
         Quote(
-            textArabic: "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ",
-            textEnglish: "In the name of Allah, the Most Gracious, the Most Merciful.",
-            source: "Quran",
-            category: .mercy,
-            reference: "Surah Al-Fatiha 1:1"
+            text: "My voice matters. My existence matters. I am not an accident — I am an ayah.",
+            category: .confidenceAndPurpose
         ),
         Quote(
-            textEnglish: "Allah divided mercy into one hundred parts. He kept ninety-nine parts with Him and sent down one part to earth. From that one part comes the compassion that all creation shows to one another.",
-            source: "Hadith",
-            category: .mercy,
-            reference: "Sahih Bukhari"
+            text: "I will walk through this world gently and confidently, as a servant of the Most High.",
+            category: .confidenceAndPurpose
+        ),
+        Quote(
+            text: "I am enough, not because of what I do, but because of who made me.",
+            category: .confidenceAndPurpose
+        ),
+        Quote(
+            text: "I choose to show up as my best self today — not perfect, but sincere.",
+            category: .confidenceAndPurpose
         ),
 
-        // MARK: - Strength (Quwwa)
+        // MARK: - Night Reflections
         Quote(
-            textArabic: "لَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا",
-            textEnglish: "Allah does not burden a soul beyond that it can bear.",
-            source: "Quran",
-            category: .strength,
-            reference: "Surah Al-Baqarah 2:286"
+            text: "I end this day by releasing everything that weighed on me. Tomorrow is a new mercy.",
+            category: .nightReflections
         ),
         Quote(
-            textEnglish: "The strong believer is better and more beloved to Allah than the weak believer, while there is good in both.",
-            source: "Hadith",
-            category: .strength,
-            reference: "Sahih Muslim"
+            text: "As the world grows quiet, I remember that Allah never sleeps. I am watched over tonight.",
+            inspiration: "Neither drowsiness overtakes Him nor sleep. — 2:255",
+            category: .nightReflections
         ),
         Quote(
-            textArabic: "وَلَا تَهِنُوا وَلَا تَحْزَنُوا وَأَنتُمُ الْأَعْلَوْنَ",
-            textEnglish: "Do not weaken and do not grieve, and you will be superior if you are true believers.",
-            source: "Quran",
-            category: .strength,
-            reference: "Surah Ali 'Imran 3:139"
+            text: "I forgive myself for today's shortcomings. Allah's mercy is already waiting for me.",
+            category: .nightReflections
         ),
         Quote(
-            textEnglish: "The strong person is not the one who can wrestle someone else down. The strong person is the one who can control himself when he is angry.",
-            source: "Hadith",
-            category: .strength,
-            reference: "Sahih Bukhari & Muslim"
+            text: "I close my eyes knowing that whatever I missed today was not meant for me, and whatever I received was a gift.",
+            category: .nightReflections
         ),
         Quote(
-            textArabic: "إِنَّ اللَّهَ لَا يُغَيِّرُ مَا بِقَوْمٍ حَتَّى يُغَيِّرُوا مَا بِأَنفُسِهِمْ",
-            textEnglish: "Indeed, Allah will not change the condition of a people until they change what is in themselves.",
-            source: "Quran",
-            category: .strength,
-            reference: "Surah Ar-Ra'd 13:11"
-        ),
-
-        // MARK: - Wisdom (Hikma)
-        Quote(
-            textArabic: "يُؤْتِي الْحِكْمَةَ مَن يَشَاءُ",
-            textEnglish: "He gives wisdom to whom He wills, and whoever has been given wisdom has certainly been given much good.",
-            source: "Quran",
-            category: .wisdom,
-            reference: "Surah Al-Baqarah 2:269"
+            text: "Bismillah. I place my soul in Your hands tonight, trusting I will wake renewed.",
+            category: .nightReflections
         ),
         Quote(
-            textEnglish: "Seeking knowledge is an obligation upon every Muslim.",
-            source: "Hadith",
-            category: .wisdom,
-            reference: "Ibn Majah"
+            text: "The stars above me are a reminder that even in darkness, Allah places light.",
+            category: .nightReflections
         ),
         Quote(
-            textArabic: "ادْعُ إِلَى سَبِيلِ رَبِّكَ بِالْحِكْمَةِ وَالْمَوْعِظَةِ الْحَسَنَةِ",
-            textEnglish: "Invite to the way of your Lord with wisdom and good instruction.",
-            source: "Quran",
-            category: .wisdom,
-            reference: "Surah An-Nahl 16:125"
+            text: "Tonight I am gentle with myself. I did my best, and Allah knows my heart.",
+            category: .nightReflections
         ),
         Quote(
-            textEnglish: "A wise word is the lost property of a believer. Wherever he finds it, he is most deserving of it.",
-            source: "Hadith",
-            category: .wisdom,
-            reference: "Tirmidhi"
-        ),
-        Quote(
-            textArabic: "اقْرَأْ بِاسْمِ رَبِّكَ الَّذِي خَلَقَ",
-            textEnglish: "Read in the name of your Lord who created.",
-            source: "Quran",
-            category: .wisdom,
-            reference: "Surah Al-'Alaq 96:1"
-        ),
-        Quote(
-            textEnglish: "The cure for ignorance is asking questions.",
-            source: "Hadith",
-            category: .wisdom,
-            reference: "Abu Dawud"
-        ),
-
-        // MARK: - Love (Hubb)
-        Quote(
-            textArabic: "وَمِنَ النَّاسِ مَن يَتَّخِذُ مِن دُونِ اللَّهِ أَندَادًا يُحِبُّونَهُمْ كَحُبِّ اللَّهِ وَالَّذِينَ آمَنُوا أَشَدُّ حُبًّا لِلَّهِ",
-            textEnglish: "But those who believe are stronger in love for Allah.",
-            source: "Quran",
-            category: .love,
-            reference: "Surah Al-Baqarah 2:165"
-        ),
-        Quote(
-            textEnglish: "None of you truly believes until I am more beloved to him than his father, his child, and all of mankind.",
-            source: "Hadith",
-            category: .love,
-            reference: "Sahih Bukhari & Muslim"
-        ),
-        Quote(
-            textArabic: "قُلْ إِن كُنتُمْ تُحِبُّونَ اللَّهَ فَاتَّبِعُونِي يُحْبِبْكُمُ اللَّهُ",
-            textEnglish: "Say, if you love Allah, then follow me, and Allah will love you.",
-            source: "Quran",
-            category: .love,
-            reference: "Surah Ali 'Imran 3:31"
-        ),
-        Quote(
-            textEnglish: "When Allah loves a servant, He calls Gabriel and says: I love so-and-so, so love him. Then Gabriel loves him, and he calls out to the inhabitants of the heavens: Allah loves so-and-so, so love him. Thus the inhabitants of the heavens love him, and he is given acceptance on earth.",
-            source: "Hadith",
-            category: .love,
-            reference: "Sahih Bukhari & Muslim"
-        ),
-        Quote(
-            textArabic: "إِنَّ اللَّهَ يُحِبُّ التَّوَّابِينَ وَيُحِبُّ الْمُتَطَهِّرِينَ",
-            textEnglish: "Indeed, Allah loves those who are constantly repentant and loves those who purify themselves.",
-            source: "Quran",
-            category: .love,
-            reference: "Surah Al-Baqarah 2:222"
-        ),
-        Quote(
-            textEnglish: "There are three things that whoever has them has found the sweetness of faith: when Allah and His Messenger are more beloved to him than anything else, when he loves a person and only loves him for the sake of Allah, and when he would hate to return to disbelief just as he would hate to be thrown into the Fire.",
-            source: "Hadith",
-            category: .love,
-            reference: "Sahih Bukhari & Muslim"
+            text: "I let go of today's worries, wrapping myself in the peace of the One who created the night for rest.",
+            inspiration: "And made the night as clothing. — 78:10",
+            category: .nightReflections
         )
     ]
 
@@ -427,7 +226,6 @@ struct QuotesData {
     }
 
     static var dailyQuote: Quote {
-        // Use the day of the year to select a consistent quote for each day
         let calendar = Calendar.current
         let dayOfYear = calendar.ordinality(of: .day, in: .year, for: Date()) ?? 1
         let index = (dayOfYear - 1) % allQuotes.count

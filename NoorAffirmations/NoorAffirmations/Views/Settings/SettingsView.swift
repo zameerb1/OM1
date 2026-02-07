@@ -2,17 +2,19 @@
 //  SettingsView.swift
 //  NoorAffirmations
 //
+//  Soft, minimal settings with morning/evening reminder controls
+//
 
 import SwiftUI
 
 struct SettingsView: View {
     @EnvironmentObject var settingsManager: SettingsManager
-    @State private var showTimePicker = false
+    @State private var showMorningTimePicker = false
+    @State private var showEveningTimePicker = false
 
     var body: some View {
         ZStack {
-            // Background
-            backgroundGradient
+            Color.noorBackground
                 .ignoresSafeArea()
 
             ScrollView(showsIndicators: false) {
@@ -24,29 +26,12 @@ struct SettingsView: View {
 
                     // Settings sections
                     VStack(spacing: 20) {
-                        // Display Settings
-                        settingsSection(title: "Display") {
+                        // Reminders
+                        settingsSection(title: "Reminders") {
                             SettingsToggleRow(
-                                icon: "moon.fill",
-                                title: "Dark Mode",
-                                subtitle: "Use dark appearance",
-                                isOn: $settingsManager.isDarkMode
-                            )
-
-                            SettingsToggleRow(
-                                icon: "character.book.closed.ar",
-                                title: "Show Arabic Text",
-                                subtitle: "Display original Arabic verses",
-                                isOn: $settingsManager.showArabicText
-                            )
-                        }
-
-                        // Notifications Settings
-                        settingsSection(title: "Notifications") {
-                            SettingsToggleRow(
-                                icon: "bell.fill",
-                                title: "Daily Reminder",
-                                subtitle: "Get your daily affirmation",
+                                icon: "bell",
+                                title: "Daily Reminders",
+                                subtitle: "Gentle affirmation notifications",
                                 isOn: Binding(
                                     get: { settingsManager.notificationsEnabled },
                                     set: { _ in settingsManager.toggleNotifications() }
@@ -54,12 +39,37 @@ struct SettingsView: View {
                             )
 
                             if settingsManager.notificationsEnabled {
-                                SettingsActionRow(
-                                    icon: "clock.fill",
-                                    title: "Reminder Time",
-                                    value: formattedTime
-                                ) {
-                                    showTimePicker = true
+                                // Reminder time preference
+                                VStack(spacing: 0) {
+                                    ForEach(ReminderTime.allCases, id: \.rawValue) { option in
+                                        ReminderOptionRow(
+                                            option: option,
+                                            isSelected: settingsManager.reminderTimePreference == option
+                                        ) {
+                                            settingsManager.reminderTimePreference = option
+                                        }
+                                    }
+                                }
+
+                                // Time pickers
+                                if settingsManager.reminderTimePreference == .morning || settingsManager.reminderTimePreference == .both {
+                                    SettingsActionRow(
+                                        icon: "sunrise",
+                                        title: "Morning Time",
+                                        value: formattedTime(settingsManager.morningTime)
+                                    ) {
+                                        showMorningTimePicker = true
+                                    }
+                                }
+
+                                if settingsManager.reminderTimePreference == .evening || settingsManager.reminderTimePreference == .both {
+                                    SettingsActionRow(
+                                        icon: "moon",
+                                        title: "Evening Time",
+                                        value: formattedTime(settingsManager.eveningTime)
+                                    ) {
+                                        showEveningTimePicker = true
+                                    }
                                 }
                             }
                         }
@@ -67,19 +77,19 @@ struct SettingsView: View {
                         // About Section
                         settingsSection(title: "About") {
                             SettingsInfoRow(
-                                icon: "info.circle.fill",
+                                icon: "info.circle",
                                 title: "Version",
                                 value: "1.0.0"
                             )
 
                             SettingsInfoRow(
-                                icon: "book.fill",
+                                icon: "text.quote",
                                 title: "Total Affirmations",
                                 value: "\(QuotesData.allQuotes.count)"
                             )
 
                             SettingsInfoRow(
-                                icon: "square.grid.2x2.fill",
+                                icon: "square.grid.2x2",
                                 title: "Categories",
                                 value: "\(QuoteCategory.allCases.count)"
                             )
@@ -93,99 +103,136 @@ struct SettingsView: View {
                 }
             }
         }
-        .sheet(isPresented: $showTimePicker) {
+        .sheet(isPresented: $showMorningTimePicker) {
             TimePickerSheet(
+                title: "Morning Reminder",
                 selectedTime: Binding(
-                    get: { settingsManager.notificationTime },
-                    set: { settingsManager.notificationTime = $0 }
+                    get: { settingsManager.morningTime },
+                    set: { settingsManager.morningTime = $0 }
+                )
+            )
+            .presentationDetents([.height(320)])
+        }
+        .sheet(isPresented: $showEveningTimePicker) {
+            TimePickerSheet(
+                title: "Evening Reminder",
+                selectedTime: Binding(
+                    get: { settingsManager.eveningTime },
+                    set: { settingsManager.eveningTime = $0 }
                 )
             )
             .presentationDetents([.height(320)])
         }
     }
 
-    // MARK: - Background
-    private var backgroundGradient: some View {
-        LinearGradient(
-            colors: [
-                Color(hex: "#0D1B2A"),
-                Color(hex: "#1B3A4B"),
-                Color(hex: "#274653")
-            ],
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
-        )
-    }
-
     // MARK: - Header
     private var headerSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 6) {
             Text("Settings")
                 .font(.system(size: 32, weight: .bold, design: .rounded))
-                .foregroundStyle(.white)
+                .foregroundStyle(Color.noorTextPrimary)
 
             Text("Customize your experience")
                 .font(.system(size: 15, weight: .regular))
-                .foregroundStyle(.white.opacity(0.6))
+                .foregroundStyle(Color.noorTextTertiary)
         }
     }
 
     // MARK: - Settings Section
     private func settingsSection<Content: View>(title: String, @ViewBuilder content: () -> Content) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 10) {
             Text(title.uppercased())
-                .font(.system(size: 12, weight: .semibold))
-                .foregroundStyle(.white.opacity(0.5))
+                .font(.system(size: 12, weight: .semibold, design: .rounded))
+                .foregroundStyle(Color.noorTextTertiary)
                 .padding(.leading, 4)
 
             VStack(spacing: 0) {
                 content()
             }
             .background(
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(.white.opacity(0.05))
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .fill(Color.noorCardBackground)
+                    .shadow(color: .black.opacity(0.04), radius: 8, x: 0, y: 3)
             )
         }
     }
 
     // MARK: - App Info
     private var appInfoSection: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 14) {
             // App icon
             ZStack {
-                RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .fill(LinearGradient.islamicGold)
-                    .frame(width: 80, height: 80)
+                RoundedRectangle(cornerRadius: 22, style: .continuous)
+                    .fill(
+                        LinearGradient(
+                            colors: [Color.noorPeach, Color.noorSand],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .frame(width: 72, height: 72)
 
-                Image(systemName: "moon.stars.fill")
-                    .font(.system(size: 36))
-                    .foregroundStyle(.white)
+                Image(systemName: "moon.stars")
+                    .font(.system(size: 30, weight: .light))
+                    .foregroundStyle(Color.noorTextPrimary.opacity(0.7))
             }
 
             VStack(spacing: 4) {
-                Text("Noor Affirmations")
-                    .font(.system(size: 18, weight: .bold))
-                    .foregroundStyle(.white)
+                Text("Noor")
+                    .font(.system(size: 20, weight: .bold, design: .rounded))
+                    .foregroundStyle(Color.noorTextPrimary)
 
-                Text("Islamic Daily Affirmations")
+                Text("Islamic Affirmations")
                     .font(.system(size: 13, weight: .regular))
-                    .foregroundStyle(.white.opacity(0.6))
+                    .foregroundStyle(Color.noorTextTertiary)
             }
 
-            Text("May these words of wisdom bring light to your heart and strengthen your faith.")
+            Text("May these words bring light to your heart\nand peace to your soul.")
                 .font(.system(size: 12, weight: .regular))
-                .foregroundStyle(.white.opacity(0.5))
+                .foregroundStyle(Color.noorTextTertiary)
                 .multilineTextAlignment(.center)
-                .padding(.horizontal, 24)
+                .lineSpacing(3)
         }
         .frame(maxWidth: .infinity)
-        .padding(.vertical, 32)
+        .padding(.vertical, 28)
     }
 
-    private var formattedTime: String {
+    private func formattedTime(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.timeStyle = .short
-        return formatter.string(from: settingsManager.notificationTime)
+        return formatter.string(from: date)
+    }
+}
+
+// MARK: - Reminder Option Row
+struct ReminderOptionRow: View {
+    let option: ReminderTime
+    let isSelected: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 12) {
+                Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                    .font(.system(size: 18))
+                    .foregroundStyle(isSelected ? Color.noorAccentWarm : Color.noorTextTertiary)
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(option.rawValue)
+                        .font(.system(size: 15, weight: .medium))
+                        .foregroundStyle(Color.noorTextPrimary)
+
+                    Text(option.description)
+                        .font(.system(size: 12, weight: .regular))
+                        .foregroundStyle(Color.noorTextTertiary)
+                }
+
+                Spacer()
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
+        }
+        .buttonStyle(.plain)
     }
 }
 
@@ -199,24 +246,24 @@ struct SettingsToggleRow: View {
     var body: some View {
         HStack(spacing: 14) {
             Image(systemName: icon)
-                .font(.system(size: 18))
-                .foregroundStyle(Color.accentGold)
-                .frame(width: 32)
+                .font(.system(size: 16))
+                .foregroundStyle(Color.noorAccentWarm)
+                .frame(width: 28)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)
                     .font(.system(size: 15, weight: .medium))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(Color.noorTextPrimary)
 
                 Text(subtitle)
                     .font(.system(size: 12, weight: .regular))
-                    .foregroundStyle(.white.opacity(0.5))
+                    .foregroundStyle(Color.noorTextTertiary)
             }
 
             Spacer()
 
             Toggle("", isOn: $isOn)
-                .tint(Color.accentGold)
+                .tint(Color.noorAccentWarm)
                 .labelsHidden()
         }
         .padding(.horizontal, 16)
@@ -234,23 +281,23 @@ struct SettingsActionRow: View {
         Button(action: action) {
             HStack(spacing: 14) {
                 Image(systemName: icon)
-                    .font(.system(size: 18))
-                    .foregroundStyle(Color.accentGold)
-                    .frame(width: 32)
+                    .font(.system(size: 16))
+                    .foregroundStyle(Color.noorAccentWarm)
+                    .frame(width: 28)
 
                 Text(title)
                     .font(.system(size: 15, weight: .medium))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(Color.noorTextPrimary)
 
                 Spacer()
 
                 Text(value)
                     .font(.system(size: 14, weight: .regular))
-                    .foregroundStyle(.white.opacity(0.6))
+                    .foregroundStyle(Color.noorTextTertiary)
 
                 Image(systemName: "chevron.right")
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundStyle(.white.opacity(0.3))
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundStyle(Color.noorTextTertiary.opacity(0.5))
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 14)
@@ -267,19 +314,19 @@ struct SettingsInfoRow: View {
     var body: some View {
         HStack(spacing: 14) {
             Image(systemName: icon)
-                .font(.system(size: 18))
-                .foregroundStyle(Color.accentGold)
-                .frame(width: 32)
+                .font(.system(size: 16))
+                .foregroundStyle(Color.noorAccentWarm)
+                .frame(width: 28)
 
             Text(title)
                 .font(.system(size: 15, weight: .medium))
-                .foregroundStyle(.white)
+                .foregroundStyle(Color.noorTextPrimary)
 
             Spacer()
 
             Text(value)
                 .font(.system(size: 14, weight: .regular))
-                .foregroundStyle(.white.opacity(0.6))
+                .foregroundStyle(Color.noorTextTertiary)
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 14)
@@ -288,16 +335,16 @@ struct SettingsInfoRow: View {
 
 // MARK: - Time Picker Sheet
 struct TimePickerSheet: View {
+    var title: String = "Reminder Time"
     @Binding var selectedTime: Date
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
-        VStack(spacing: 24) {
-            // Header
+        VStack(spacing: 20) {
             HStack {
-                Text("Reminder Time")
-                    .font(.system(size: 18, weight: .bold))
-                    .foregroundStyle(.primary)
+                Text(title)
+                    .font(.system(size: 18, weight: .semibold, design: .rounded))
+                    .foregroundStyle(Color.noorTextPrimary)
 
                 Spacer()
 
@@ -305,7 +352,7 @@ struct TimePickerSheet: View {
                     dismiss()
                 }
                 .font(.system(size: 16, weight: .semibold))
-                .foregroundStyle(Color.accentGold)
+                .foregroundStyle(Color.noorAccentWarm)
             }
             .padding(.horizontal, 24)
             .padding(.top, 20)
@@ -320,6 +367,7 @@ struct TimePickerSheet: View {
 
             Spacer()
         }
+        .background(Color.noorBackground)
     }
 }
 

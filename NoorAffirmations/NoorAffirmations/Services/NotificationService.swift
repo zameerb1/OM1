@@ -18,13 +18,19 @@ class NotificationService {
         }
     }
 
-    func scheduleDailyNotification(at time: Date) {
+    func scheduleDailyNotification(
+        at time: Date,
+        identifier: String = "dailyAffirmation",
+        title: String = "Your Daily Noor",
+        isMorning: Bool = true
+    ) {
         let center = UNUserNotificationCenter.current()
-        center.removeAllPendingNotificationRequests()
 
         let content = UNMutableNotificationContent()
-        content.title = "Your Daily Noor"
-        content.body = getDailyAffirmationPreview()
+        content.title = title
+        content.body = isMorning
+            ? getMorningAffirmationPreview()
+            : getEveningAffirmationPreview()
         content.sound = .default
 
         let calendar = Calendar.current
@@ -32,7 +38,7 @@ class NotificationService {
 
         let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
         let request = UNNotificationRequest(
-            identifier: "dailyAffirmation",
+            identifier: identifier,
             content: content,
             trigger: trigger
         )
@@ -48,9 +54,17 @@ class NotificationService {
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     }
 
-    private func getDailyAffirmationPreview() -> String {
-        let quote = QuotesData.dailyQuote
-        let preview = String(quote.textEnglish.prefix(100))
-        return preview.count < quote.textEnglish.count ? preview + "..." : preview
+    private func getMorningAffirmationPreview() -> String {
+        let morningCategories: [QuoteCategory] = [.gratitude, .trustInAllah, .confidenceAndPurpose]
+        let category = morningCategories.randomElement() ?? .gratitude
+        let quote = QuotesData.randomQuote(from: category)
+        return String(quote.text.prefix(120))
+    }
+
+    private func getEveningAffirmationPreview() -> String {
+        let eveningCategories: [QuoteCategory] = [.nightReflections, .anxietyAndCalm, .healingAndHardTimes]
+        let category = eveningCategories.randomElement() ?? .nightReflections
+        let quote = QuotesData.randomQuote(from: category)
+        return String(quote.text.prefix(120))
     }
 }

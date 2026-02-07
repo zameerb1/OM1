@@ -2,6 +2,8 @@
 //  ContentView.swift
 //  NoorAffirmations
 //
+//  Minimal tab-based navigation with soft pastel tab bar
+//
 
 import SwiftUI
 
@@ -39,7 +41,6 @@ struct ContentView: View {
 
 struct CustomTabBar: View {
     @Binding var selectedTab: ContentView.Tab
-    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         HStack(spacing: 0) {
@@ -64,7 +65,7 @@ struct CustomTabBar: View {
             }
 
             TabBarButton(
-                icon: "heart.fill",
+                icon: "heart",
                 title: "Favorites",
                 isSelected: selectedTab == .favorites
             ) {
@@ -83,16 +84,16 @@ struct CustomTabBar: View {
                 }
             }
         }
-        .padding(.horizontal, 8)
+        .padding(.horizontal, 12)
         .padding(.top, 12)
         .padding(.bottom, 28)
         .background(
-            RoundedRectangle(cornerRadius: 30, style: .continuous)
-                .fill(.ultraThinMaterial)
-                .shadow(color: .black.opacity(0.1), radius: 20, x: 0, y: -5)
+            RoundedRectangle(cornerRadius: 28, style: .continuous)
+                .fill(Color.noorCardBackground)
+                .shadow(color: .black.opacity(0.06), radius: 16, x: 0, y: -4)
         )
         .padding(.horizontal, 16)
-        .padding(.bottom, 8)
+        .padding(.bottom, 4)
     }
 }
 
@@ -105,19 +106,19 @@ struct TabBarButton: View {
     var body: some View {
         Button(action: action) {
             VStack(spacing: 4) {
-                Image(systemName: icon)
-                    .font(.system(size: 22, weight: isSelected ? .semibold : .regular))
-                    .foregroundStyle(isSelected ? Color.accentGold : .secondary)
+                Image(systemName: isSelected ? icon + (icon == "heart" ? ".fill" : "") : icon)
+                    .font(.system(size: 20, weight: isSelected ? .semibold : .regular))
+                    .foregroundStyle(isSelected ? Color.noorAccentWarm : Color.noorTextTertiary)
 
                 Text(title)
                     .font(.system(size: 10, weight: isSelected ? .semibold : .regular))
-                    .foregroundStyle(isSelected ? Color.accentGold : .secondary)
+                    .foregroundStyle(isSelected ? Color.noorAccentWarm : Color.noorTextTertiary)
             }
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 8)
+            .padding(.vertical, 6)
             .background(
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(isSelected ? Color.accentGold.opacity(0.15) : .clear)
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .fill(isSelected ? Color.noorAccentWarm.opacity(0.1) : .clear)
             )
         }
         .buttonStyle(.plain)

@@ -7,95 +7,73 @@ import Foundation
 
 struct Quote: Identifiable, Codable, Equatable {
     let id: UUID
-    let textArabic: String?
-    let textEnglish: String
-    let source: String
+    let text: String
+    let inspiration: String?
     let category: QuoteCategory
-    let reference: String?
 
     init(
         id: UUID = UUID(),
-        textArabic: String? = nil,
-        textEnglish: String,
-        source: String,
-        category: QuoteCategory,
-        reference: String? = nil
+        text: String,
+        inspiration: String? = nil,
+        category: QuoteCategory
     ) {
         self.id = id
-        self.textArabic = textArabic
-        self.textEnglish = textEnglish
-        self.source = source
+        self.text = text
+        self.inspiration = inspiration
         self.category = category
-        self.reference = reference
     }
 }
 
 enum QuoteCategory: String, Codable, CaseIterable, Identifiable {
-    case patience = "Sabr (Patience)"
-    case gratitude = "Shukr (Gratitude)"
-    case faith = "Iman (Faith)"
-    case trust = "Tawakkul (Trust in Allah)"
-    case peace = "Salam (Peace)"
-    case hope = "Raja (Hope)"
-    case mercy = "Rahma (Mercy)"
-    case strength = "Quwwa (Strength)"
-    case wisdom = "Hikma (Wisdom)"
-    case love = "Hubb (Love)"
+    case anxietyAndCalm = "Anxiety & Calm"
+    case trustInAllah = "Trust in Allah"
+    case gratitude = "Gratitude"
+    case healingAndHardTimes = "Healing & Hard Times"
+    case confidenceAndPurpose = "Confidence & Purpose"
+    case nightReflections = "Night Reflections"
 
     var id: String { rawValue }
 
     var icon: String {
         switch self {
-        case .patience: return "hourglass"
-        case .gratitude: return "hands.clap"
-        case .faith: return "star.fill"
-        case .trust: return "heart.circle"
-        case .peace: return "leaf.fill"
-        case .hope: return "sun.max.fill"
-        case .mercy: return "drop.fill"
-        case .strength: return "bolt.fill"
-        case .wisdom: return "book.fill"
-        case .love: return "heart.fill"
+        case .anxietyAndCalm: return "wind"
+        case .trustInAllah: return "hands.and.sparkles"
+        case .gratitude: return "leaf.fill"
+        case .healingAndHardTimes: return "heart.circle"
+        case .confidenceAndPurpose: return "sun.max.fill"
+        case .nightReflections: return "moon.stars"
+        }
+    }
+
+    var subtitle: String {
+        switch self {
+        case .anxietyAndCalm:
+            return "Find sakina in moments of worry"
+        case .trustInAllah:
+            return "Surrender to His perfect plan"
+        case .gratitude:
+            return "See the blessings all around you"
+        case .healingAndHardTimes:
+            return "Gentle words for heavy hearts"
+        case .confidenceAndPurpose:
+            return "You were created with intention"
+        case .nightReflections:
+            return "Peaceful thoughts before rest"
         }
     }
 
     var gradientColors: [String] {
         switch self {
-        case .patience: return ["#1A535C", "#4ECDC4"]
-        case .gratitude: return ["#C9A227", "#F4D03F"]
-        case .faith: return ["#2E4057", "#048A81"]
-        case .trust: return ["#5B5EA6", "#9B59B6"]
-        case .peace: return ["#16A085", "#1ABC9C"]
-        case .hope: return ["#F39C12", "#F1C40F"]
-        case .mercy: return ["#3498DB", "#5DADE2"]
-        case .strength: return ["#8E44AD", "#9B59B6"]
-        case .wisdom: return ["#1A535C", "#4ECDC4"]
-        case .love: return ["#E74C3C", "#F1948A"]
+        case .anxietyAndCalm: return ["#D4E4D4", "#B7C9B7"]
+        case .trustInAllah: return ["#D8CEE8", "#C5B8D9"]
+        case .gratitude: return ["#F0D1B8", "#E8C4A8"]
+        case .healingAndHardTimes: return ["#F0D8D8", "#E8C4C4"]
+        case .confidenceAndPurpose: return ["#F5F0EB", "#E8DDD3"]
+        case .nightReflections: return ["#C8DBE8", "#B5CDE0"]
         }
     }
 
     var description: String {
-        switch self {
-        case .patience:
-            return "Patience is half of faith. Find peace in waiting."
-        case .gratitude:
-            return "Gratitude increases blessings. Be thankful always."
-        case .faith:
-            return "Strengthen your connection with the Divine."
-        case .trust:
-            return "Place your trust in Allah's plan for you."
-        case .peace:
-            return "Find tranquility in remembrance of Allah."
-        case .hope:
-            return "Never despair of Allah's mercy and grace."
-        case .mercy:
-            return "Show mercy to others as Allah shows mercy to you."
-        case .strength:
-            return "Draw strength from your faith in difficult times."
-        case .wisdom:
-            return "Seek knowledge and wisdom in all things."
-        case .love:
-            return "Love for the sake of Allah brings the purest joy."
-        }
+        subtitle
     }
 }

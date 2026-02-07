@@ -2,6 +2,8 @@
 //  CategoryDetailView.swift
 //  NoorAffirmations
 //
+//  Paginated view of affirmations within a category
+//
 
 import SwiftUI
 
@@ -9,11 +11,9 @@ struct CategoryDetailView: View {
     let category: QuoteCategory
     @EnvironmentObject var quoteManager: QuoteManager
     @EnvironmentObject var favoritesManager: FavoritesManager
-    @EnvironmentObject var settingsManager: SettingsManager
     @Environment(\.dismiss) var dismiss
 
     @State private var currentIndex = 0
-    @State private var dragOffset: CGFloat = 0
 
     private var quotes: [Quote] {
         QuotesData.quotes(for: category)
@@ -21,13 +21,17 @@ struct CategoryDetailView: View {
 
     var body: some View {
         ZStack {
-            // Background
-            LinearGradient.forCategory(category)
-                .ignoresSafeArea()
-
-            // Overlay
-            Color.black.opacity(0.3)
-                .ignoresSafeArea()
+            // Soft background with category tint
+            LinearGradient(
+                colors: [
+                    Color.noorBackground,
+                    Color(hex: category.gradientColors[0]).opacity(0.2),
+                    Color(hex: category.gradientColors[1]).opacity(0.15)
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .ignoresSafeArea()
 
             VStack(spacing: 0) {
                 // Header
@@ -41,12 +45,9 @@ struct CategoryDetailView: View {
                 if !quotes.isEmpty {
                     TabView(selection: $currentIndex) {
                         ForEach(Array(quotes.enumerated()), id: \.element.id) { index, quote in
-                            QuoteCardView(
-                                quote: quote,
-                                showArabic: settingsManager.showArabicText
-                            )
-                            .padding(.horizontal, 24)
-                            .tag(index)
+                            QuoteCardView(quote: quote)
+                                .padding(.horizontal, 24)
+                                .tag(index)
                         }
                     }
                     .tabViewStyle(.page(indexDisplayMode: .never))
@@ -69,11 +70,11 @@ struct CategoryDetailView: View {
                 } label: {
                     HStack(spacing: 4) {
                         Image(systemName: "chevron.left")
-                            .font(.system(size: 16, weight: .semibold))
+                            .font(.system(size: 14, weight: .semibold))
                         Text("Back")
-                            .font(.system(size: 16, weight: .medium))
+                            .font(.system(size: 15, weight: .medium))
                     }
-                    .foregroundStyle(.white)
+                    .foregroundStyle(Color.noorTextSecondary)
                 }
             }
         }
@@ -86,17 +87,17 @@ struct CategoryDetailView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(spacing: 8) {
                         Image(systemName: category.icon)
-                            .font(.system(size: 18, weight: .semibold))
-                            .foregroundStyle(Color.accentGold)
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundStyle(Color.noorAccentWarm)
 
                         Text(category.rawValue)
-                            .font(.system(size: 24, weight: .bold, design: .rounded))
-                            .foregroundStyle(.white)
+                            .font(.system(size: 22, weight: .bold, design: .rounded))
+                            .foregroundStyle(Color.noorTextPrimary)
                     }
 
-                    Text(category.description)
+                    Text(category.subtitle)
                         .font(.system(size: 13, weight: .regular))
-                        .foregroundStyle(.white.opacity(0.7))
+                        .foregroundStyle(Color.noorTextTertiary)
                 }
 
                 Spacer()
@@ -107,21 +108,20 @@ struct CategoryDetailView: View {
     // MARK: - Bottom Controls
     private var bottomControls: some View {
         VStack(spacing: 20) {
-            // Progress indicator
+            // Progress dots
             if !quotes.isEmpty {
-                HStack(spacing: 4) {
-                    Text("\(currentIndex + 1)")
-                        .font(.system(size: 14, weight: .bold))
-                        .foregroundStyle(Color.accentGold)
-
-                    Text("of \(quotes.count)")
-                        .font(.system(size: 14, weight: .regular))
-                        .foregroundStyle(.white.opacity(0.6))
+                HStack(spacing: 6) {
+                    ForEach(0..<quotes.count, id: \.self) { index in
+                        Circle()
+                            .fill(index == currentIndex ? Color.noorAccentWarm : Color.noorSand)
+                            .frame(width: index == currentIndex ? 8 : 6, height: index == currentIndex ? 8 : 6)
+                            .animation(.spring(response: 0.3), value: currentIndex)
+                    }
                 }
             }
 
             // Action buttons
-            HStack(spacing: 40) {
+            HStack(spacing: 36) {
                 // Previous
                 Button {
                     withAnimation {
@@ -131,26 +131,36 @@ struct CategoryDetailView: View {
                     }
                 } label: {
                     Image(systemName: "chevron.left")
-                        .font(.system(size: 20, weight: .semibold))
-                        .foregroundStyle(.white)
-                        .frame(width: 50, height: 50)
-                        .background(Circle().fill(.white.opacity(0.15)))
+                        .font(.system(size: 18, weight: .medium))
+                        .foregroundStyle(Color.noorTextSecondary)
+                        .frame(width: 48, height: 48)
+                        .background(
+                            Circle()
+                                .fill(Color.noorCardBackground)
+                                .shadow(color: .black.opacity(0.05), radius: 6, x: 0, y: 2)
+                        )
                 }
                 .disabled(currentIndex == 0)
-                .opacity(currentIndex == 0 ? 0.4 : 1)
+                .opacity(currentIndex == 0 ? 0.3 : 1)
 
                 // Favorite
                 Button {
                     if !quotes.isEmpty {
-                        favoritesManager.toggleFavorite(quotes[currentIndex])
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+                            favoritesManager.toggleFavorite(quotes[currentIndex])
+                        }
                     }
                 } label: {
                     let isFavorite = !quotes.isEmpty && favoritesManager.isFavorite(quotes[currentIndex])
                     Image(systemName: isFavorite ? "heart.fill" : "heart")
-                        .font(.system(size: 24, weight: .semibold))
-                        .foregroundStyle(isFavorite ? Color.accentGold : .white)
-                        .frame(width: 60, height: 60)
-                        .background(Circle().fill(.white.opacity(0.2)))
+                        .font(.system(size: 22, weight: .medium))
+                        .foregroundStyle(isFavorite ? Color.noorAccentWarm : Color.noorTextSecondary)
+                        .frame(width: 56, height: 56)
+                        .background(
+                            Circle()
+                                .fill(Color.noorCardBackground)
+                                .shadow(color: .black.opacity(0.06), radius: 8, x: 0, y: 3)
+                        )
                 }
 
                 // Next
@@ -162,13 +172,17 @@ struct CategoryDetailView: View {
                     }
                 } label: {
                     Image(systemName: "chevron.right")
-                        .font(.system(size: 20, weight: .semibold))
-                        .foregroundStyle(.white)
-                        .frame(width: 50, height: 50)
-                        .background(Circle().fill(.white.opacity(0.15)))
+                        .font(.system(size: 18, weight: .medium))
+                        .foregroundStyle(Color.noorTextSecondary)
+                        .frame(width: 48, height: 48)
+                        .background(
+                            Circle()
+                                .fill(Color.noorCardBackground)
+                                .shadow(color: .black.opacity(0.05), radius: 6, x: 0, y: 2)
+                        )
                 }
                 .disabled(currentIndex == quotes.count - 1)
-                .opacity(currentIndex == quotes.count - 1 ? 0.4 : 1)
+                .opacity(currentIndex == quotes.count - 1 ? 0.3 : 1)
             }
         }
     }
@@ -176,9 +190,8 @@ struct CategoryDetailView: View {
 
 #Preview {
     NavigationStack {
-        CategoryDetailView(category: .patience)
+        CategoryDetailView(category: .anxietyAndCalm)
             .environmentObject(QuoteManager())
             .environmentObject(FavoritesManager())
-            .environmentObject(SettingsManager())
     }
 }
